@@ -20,3 +20,20 @@ const skills = [
     "name": "Smidighet"
   }
 ];
+
+const locations = [{
+  "id": 1,
+  "name": "El Dorado"
+}, {
+  "id": 2,
+  "name": "Atlantis"
+}, {
+  "id": 3,
+  "name": "Shangri-La"
+}, {
+  "id": 4,
+  "name": "Area-51"
+}, {
+  "id": 5,
+  "name": "Midgård"
+}]
