@@ -1,23 +1,58 @@
-let filePath = "./database/dataset.v2.js";
+const characters = [
+  { name: "Bigfoot", category: "Monster" },
+  { name: "Alien", category: "Monster" },
+  { name: "Tor", category: "Gud" },
+  { name: "Jultomten", category: "Övrig" },
+  { name: "Krampus", category: "Monster" },
+  { name: "Slender Man", category: "Sagoväsen" },
+  { name: "Borat", category: "Övrig" },
+  { name: "Yeti", category: "Monster" },
+  { name: "Troll", category: "Sagoväsen" },
+  { name: "Ompa Lompa", category: "Sagoväsen" },
+  { name: "Zeus", category: "Gud" },
+  { name: "Hades", category: "Gud" },
+  { name: "Anubis", category: "Gud" },
+  { name: "Gandalf", category: "Sagoväsen" },
+  { name: "Godzilla", category: "Monster" },
+  { name: "Oni", category: "Monster" },
+  { name: "Shiva", category: "Gud" },
+  { name: "Tintin", category: "Sagoväsen" },
+  { name: "Grip", category: "Monster" },
+  { name: "Siren Head", category: "Övrig" },
+  { name: "Medusa", category: "Gud" },
+  { name: "Minion", category: "Övrig" },
+  { name: "Shrek", category: "Sagoväsen" },
+  { name: "Påskharen", category: "Övrig" },
+  { name: "Tandfen", category: "Övrig" },
+  { name: "Dracula", category: "Monster" },
+  { name: "Garuda", category: "Monster" },
+  { name: "King Kong", category: "Monster" },
+  { name: "Frankenstein", category: "Monster" },
+  { name: "Gammelsmurfen", category: "Sagoväsen" },
+  { name: "Sjöjungfru", category: "Övrig" },
+  { name: "Rödluvan", category: "Sagoväsen" },
+  { name: "Poseidon", category: "Gud" },
+  { name: "Horus", category: "Gud" },
+  { name: "Goblin", category: "Sagoväsen" },
+  { name: "Loch ness (Nessie)", category: "Monster" },
+  { name: "Biggie Cheese", category: "Sagoväsen" },
+  { name: "Spagettimonstret", category: "Monster" },
+  { name: "Stora Morran", category: "Monster" },
+  { name: "Varulv", category: "Monster" },
+  { name: "Hydra", category: "Monster" },
+  { name: "Rattata", category: "Sagoväsen" },
+  { name: "Jack the Ripper", category: "Övrig" },
+  { name: "Björne", category: "Sagoväsen" },
+  { name: "Megalodon", category: "Monster" }
+];
 
-async function updateSkills() {
-    const mySkills = ["Styrka", "Kondition", "Teknik", "Logik", "Smidighet"];
-    
-    try {
-        const data = await Deno.readTextFile(filePath);
-        const skills = eval(data.match(/const skills = (.+);/s)[1]);
-        for (let i = 0; i < skills.length; i++) {
-            if (i < mySkills.length) {
-                skills[i].name = mySkills[i]; 
-            }
-        }
-        const updatedData = `const skills = ${JSON.stringify(skills, null, 2)};\n`;
-        await Deno.writeTextFile(filePath, updatedData);
-        console.log("Alla relevanta poster har uppdaterats!");
+const driver = () => {
+    //Byter deltagarnas namn och sätter type
 
-
-    } catch(error) {
-        console.log(error)
+    for (i=0; i<participants.length; i++) {
+        participants[i].name = characters[i].name;
+        participants[i].type = characters[i].category;
     }
 }
-updateSkills();
+
+driver();
