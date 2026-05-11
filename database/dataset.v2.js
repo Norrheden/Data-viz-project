@@ -2,19 +2,19 @@
 
 const skills = [{
   "id": 1,
-  "name": "S01"
+  "name": "Styrka"
 }, {
   "id": 2,
-  "name": "S02"
+  "name": "Kondition"
 }, {
   "id": 3,
-  "name": "S03"
+  "name": "Teknik"
 }, {
   "id": 4,
-  "name": "S04"
+  "name": "Logik"
 }, {
   "id": 5,
-  "name": "S05"
+  "name": "Smidighet"
 }]
 
 const locations = [{
