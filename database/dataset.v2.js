@@ -353,7 +353,7 @@ const trainers = [{
 }]
 
 const seasons = [{
-  "year": 0,
+  "year": 2017,
   "coaches": [{
     "participantId": 141,
     "coachId": 11
@@ -15098,7 +15098,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 1,
+  "year": 2018,
   "coaches": [{
     "participantId": 170,
     "coachId": 6
@@ -29843,7 +29843,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 2,
+  "year": 2019,
   "coaches": [{
     "participantId": 170,
     "coachId": 6
@@ -44252,7 +44252,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 3,
+  "year": 2020,
   "coaches": [{
     "participantId": 170,
     "coachId": 6
@@ -58661,7 +58661,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 4,
+  "year": 2021,
   "coaches": [{
     "participantId": 170,
     "coachId": 5
@@ -73070,7 +73070,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 5,
+  "year": 2022,
   "coaches": [{
     "participantId": 190,
     "coachId": 6
@@ -87479,7 +87479,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 6,
+  "year": 2023,
   "coaches": [{
     "participantId": 19,
     "coachId": 4
@@ -102224,7 +102224,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 7,
+  "year": 2024,
   "coaches": [{
     "participantId": 190,
     "coachId": 6
@@ -116633,7 +116633,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 8,
+  "year": 2025,
   "coaches": [{
     "participantId": 190,
     "coachId": 6
@@ -131042,7 +131042,7 @@ const seasons = [{
     }]
   }]
 }, {
-  "year": 9,
+  "year": 2026,
   "coaches": [{
     "participantId": 190,
     "coachId": 2
