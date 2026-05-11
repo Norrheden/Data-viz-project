@@ -1,0 +1,95 @@
+:root {
+    --main-bg-color: #F5F5DC;
+    --main-color: #1A3E72;
+    --main-color-light: #D7E4FF;
+}
+
+body {
+    background: var(--main-bg-color);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#start-view {
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-family: "Jacques Francois Shadow", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    margin: 0;
+}
+
+#start-view h1 {
+    font-size: 60px;
+}
+
+#start-button {
+    padding-top: 30px;
+    color: var(--main-color);
+    font-size: 40px;
+    transition: transform 0.3s ease;
+}
+
+#start-button:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+#table-view {
+    margin: 50px;
+}
+
+#years {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#table-and-chart-container {
+    display: flex;
+    gap: 40px;
+}
+
+#table-box {
+    background-color: var(--main-color-light);
+    flex: 1;
+    border: 1px solid var(--main-color);
+    border-radius: 12px;
+}
+
+#table-box div {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-bottom: 1px solid var(--main-color);
+}
+
+#table-box div:nth-last-child(-n + 5) {
+    background: #F76F71;
+}
+
+#table-box div:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background: #D4AF37;
+}
+
+#table-box div:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+#table-box div:hover {
+    cursor: pointer;
+    font-weight: 700;
+}
