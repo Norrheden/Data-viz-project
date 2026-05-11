@@ -67,19 +67,19 @@ const skills = [{
 
 const locations = [{
   "id": 1,
-  "name": "L01"
+  "name": "El Dorado"
 }, {
   "id": 2,
-  "name": "L02"
+  "name": "Atlantis"
 }, {
   "id": 3,
-  "name": "L03"
+  "name": "Shangri-La"
 }, {
   "id": 4,
-  "name": "L04"
+  "name": "Area-51"
 }, {
   "id": 5,
-  "name": "L05"
+  "name": "Midgård"
 }]
 
 const disciplines = [{
