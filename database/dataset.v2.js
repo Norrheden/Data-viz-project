@@ -50,36 +50,36 @@ const characters = [
 
 const skills = [{
   "id": 1,
-  "name": "S01"
+  "name": "Styrka"
 }, {
   "id": 2,
-  "name": "S02"
+  "name": "Kondition"
 }, {
   "id": 3,
-  "name": "S03"
+  "name": "Teknik"
 }, {
   "id": 4,
-  "name": "S04"
+  "name": "Logik"
 }, {
   "id": 5,
-  "name": "S05"
+  "name": "Smidighet"
 }]
 
 const locations = [{
   "id": 1,
-  "name": "L01"
+  "name": "El Dorado"
 }, {
   "id": 2,
-  "name": "L02"
+  "name": "Atlantis"
 }, {
   "id": 3,
-  "name": "L03"
+  "name": "Shangri-La"
 }, {
   "id": 4,
-  "name": "L04"
+  "name": "Area-51"
 }, {
   "id": 5,
-  "name": "L05"
+  "name": "Midgård"
 }]
 
 const disciplines = [{
