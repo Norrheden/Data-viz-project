@@ -1,5 +1,14 @@
 // Dataset
 
+const driver = () => {
+    //Byter deltagarnas namn och sätter type
+
+    for (i=0; i<participants.length; i++) {
+        participants[i].name = characters[i].name;
+        participants[i].type = characters[i].category;
+    }
+}
+
 const characters = [
   { name: "Bigfoot", category: "Monster" },
   { name: "Alien", category: "Monster" },
@@ -145451,3 +145460,5 @@ const seasons = [{
     }]
   }]
 }];
+
+driver();
