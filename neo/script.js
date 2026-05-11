@@ -1,7 +1,6 @@
 const bar = {
-    driver: () => {
-        bar.svg.append("g");
-        bar.g = d3.select("#bar g");
+    append: (placement) => {
+        //skapa "g" utifrån vart staplarna ska placeras
     },
 
     g: null,
@@ -14,13 +13,52 @@ const bar = {
 }
 
 const pie = {
+    append: (placement) => {
+        switch (placement) {
+            case "left": {
+                pie.svg.append("g")
+                    .attr("transform", `translate(${pie.padding.x}, ${pie.svgH / 2})`)
+                    .attr("id", "left");
+
+                pie.g["left"] = d3.select("#pie #left");
+                return;
+            }
+
+            case "right": {
+                pie.svg.append("g")
+                    .attr("transform", `translate(${pie.svgW - pie.padding.x}, ${pie.svgH / 2})`)
+                    .attr("id", "right");
+
+                pie.g["right"] = d3.select("#pie #right");
+                return;
+            }
+
+            case "bottom": {
+                pie.svg.append("g")
+                    .attr("transform", `translate(${pie.svgW / 2}, ${pie.svgH - pie.padding.y})`)
+                    .attr("id", "bottom");
+
+                pie.g["bottom"] = d3.select("#pie #bottom");
+                return;
+            }
+
+            case "top": {
+                pie.svg.append("g")
+                    .attr("transform", `translate(${pie.svgH / 2}, ${pie.padding.y})`)
+                    .attr("id", "top");
+
+                pie.g["top"] = d3.select("#pie #top");
+                return;
+            }
+        }
+    },
+
     arc: d3.arc().innerRadius(0).outerRadius(100),
 
     colors: d3.scaleOrdinal(locations.map(x => x.name), ["#D4AF37", "lightblue", "#98FB98", "#2F4F4F", "#8B4513"]),
 
     clear: () => {
         pie.svg.selectAll("*").remove();
-        pie.driver();
     },
 
     create: (char, season, placement) => {
@@ -29,6 +67,8 @@ const pie = {
         data.forEach(x => totalPoints += x.points);
 
         if (!totalPoints) return false;
+
+        pie.append(placement);
 
         let pieData = pie.pie(data);
         let percentage = {};
@@ -97,32 +137,6 @@ const pie = {
         return charPointsPerLoc;
     },
 
-    driver: () => {
-        pie.svg.append("g")
-            .attr("transform", `translate(${pie.padding.x}, ${pie.svgH / 2})`)
-            .attr("id", "left");
-
-        pie.g["left"] = d3.select("#pie #left");
-
-        pie.svg.append("g")
-            .attr("transform", `translate(${pie.svgW - pie.padding.x}, ${pie.svgH / 2})`)
-            .attr("id", "right");
-
-        pie.g["right"] = d3.select("#pie #right");
-
-        pie.svg.append("g")
-            .attr("transform", `translate(${pie.svgW / 2}, ${pie.svgH - pie.padding.y})`)
-            .attr("id", "bottom");
-
-        pie.g["bottom"] = d3.select("#pie #bottom");
-
-        pie.svg.append("g")
-            .attr("transform", `translate(${pie.svgH / 2}, ${pie.padding.y})`)
-            .attr("id", "top");
-
-        pie.g["top"] = d3.select("#pie #top");
-    },
-
     g: {},
 
     padding: {
@@ -160,5 +174,3 @@ const pie = {
 
     svgW: parseInt(d3.select("#pie").attr("width"))
 }
-
-pie.driver();
