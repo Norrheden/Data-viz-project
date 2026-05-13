@@ -1,9 +1,13 @@
 const bar = {
-    append: (placement) => {
+    append(placement) {
         //skapa "g" utifrån vart staplarna ska placeras
     },
 
-    g: null,
+    data() {
+
+    },
+
+    g: {},
 
     svg: d3.select("#bar"),
 
@@ -13,7 +17,7 @@ const bar = {
 }
 
 const pie = {
-    append: (placement) => {
+    append(placement) {
         switch (placement) {
             case "left": {
                 pie.svg.append("g")
@@ -57,11 +61,11 @@ const pie = {
 
     colors: d3.scaleOrdinal(locations.map(x => x.name), ["#D4AF37", "lightblue", "#98FB98", "#2F4F4F", "#8B4513"]),
 
-    clear: () => {
+    clear() {
         pie.svg.selectAll("*").remove();
     },
 
-    create: (char, season, placement) => {
+    create(char, season, placement) {
         let data = pie.data(char, season);
         let totalPoints = 0;
         data.forEach(x => totalPoints += x.points);
@@ -77,21 +81,28 @@ const pie = {
             percentage[x.loc] = Math.round((x.points / totalPoints) * 100);
         });
 
-        pie.g[placement].selectAll("*").remove();
+        //pie.g[placement].selectAll("*").remove();
 
-        pie.g[placement].selectAll("path")
-            .data(pieData)
-            .enter()
+        let paths = pie.g[placement].selectAll("path")
+            .data(pieData, d => d.data.loc);
+
+        paths.enter()
             .append("path")
             .attr("d", pie.arc)
             .attr("fill", d => pie.colors(d.data.loc))
             .attr("stroke", "black")
             .style("stroke-width", "1px")
             .append("title")
-            .text((d) => `${d.data.loc}: ${percentage[d.data.loc]}%`);
+            .text((d) => `${d.data.loc}: ${percentage[d.data.loc]}%`)
+
+        paths.transition()
+            .duration(500)
+            .attr("d", pie.arc)
+
+        return data;
     },
 
-    data: (char, season) => {
+    data(char, season) {
         const c = participants.find(x => x.name.toLowerCase() === char.toLowerCase());
         const s = seasons.find(x => x.year === season);
 
@@ -119,16 +130,16 @@ const pie = {
                 compDay.events.forEach(event => {
                     event.scores.sort((a, b) => b.score - a.score);
                     let index = event.scores.findIndex(i => i.participantId === c.id);
-                    let points = pie.points(index);
+                    let pts = points(index);
 
                     let exists = charPointsPerLoc.find(y => y.loc === x.loc);
                     if (!exists) {
                         charPointsPerLoc.push({
                             loc: x.loc,
-                            points: points
+                            points: pts
                         })
                     } else {
-                        exists.points += points;
+                        exists.points += pts;
                     }
                 });
             });
@@ -144,29 +155,7 @@ const pie = {
         y: 125
     },
 
-    pie: d3.pie().value(d => d.points),
-
-    points: (place) => {
-        switch (place) {
-            case 0:
-                return 15;
-            
-            case 1:
-                return 10;
-
-            case 2:
-                return 6;
-
-            case 3:
-                return 3;
-
-            case 4:
-                return 1;
-
-            default:
-                return 0;
-        }
-    },
+    pie: d3.pie().value(d => d.points).sort(null),
 
     svg: d3.select("#pie"),
 
@@ -174,3 +163,50 @@ const pie = {
 
     svgW: parseInt(d3.select("#pie").attr("width"))
 }
+
+const points = (place) => {
+    switch (place) {
+        case 0:
+            return 15;
+            
+        case 1:
+            return 10;
+
+        case 2:
+            return 6;
+
+        case 3:
+            return 3;
+
+        case 4:
+            return 1;
+
+        default:
+            return 0;
+    }
+}
+
+const test = () => {
+    participants.forEach(x => {
+        let opt = document.createElement("option");
+        opt.textContent = x.name;
+        document.querySelector("#participants").appendChild(opt);
+    });
+
+    let placements = ["right", "left", "bottom", "top"];
+    placements.forEach(x => {
+        let opt = document.createElement("option");
+        opt.textContent = x;
+        document.querySelector("#placement").appendChild(opt);
+    });
+
+    document.querySelector("button").addEventListener("click", () => {
+        let par = document.querySelector("#participants").value; 
+        let pla = document.querySelector("#placement").value; 
+
+        let chart = pie.create(par, 2018, pla);
+        if (!chart) console.log("didnt play");
+    });
+}
+
+test();
