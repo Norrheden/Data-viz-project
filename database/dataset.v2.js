@@ -93,7 +93,7 @@ const locations = [{
 
 const disciplines = [{
   "id": 1,
-  "name": "D01",
+  "name": "Kurragömma",
   "skillFactors": {
     "S01": 13,
     "S02": 12,
@@ -103,7 +103,7 @@ const disciplines = [{
   }
 }, {
   "id": 4,
-  "name": "D04",
+  "name": "Tyngdlyftning",
   "skillFactors": {
     "S01": 21,
     "S02": 12,
@@ -113,7 +113,7 @@ const disciplines = [{
   }
 }, {
   "id": 2,
-  "name": "D02",
+  "name": "Triathlon",
   "skillFactors": {
     "S01": 18,
     "S02": 13,
@@ -123,7 +123,7 @@ const disciplines = [{
   }
 }, {
   "id": 3,
-  "name": "D03",
+  "name": "Labyrint",
   "skillFactors": {
     "S01": 19,
     "S02": 11,
@@ -133,7 +133,7 @@ const disciplines = [{
   }
 }, {
   "id": 5,
-  "name": "D05",
+  "name": "Illusion",
   "skillFactors": {
     "S01": 20,
     "S02": 12,
