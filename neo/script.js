@@ -1,57 +1,219 @@
 const bar = {
     append(placement) {
-        //skapa "g" utifrån vart staplarna ska placeras
+        switch (placement) {
+            case "one": {
+                this.svg.append("g").attr("id", "bar-one")
+                    .attr("transform", `translate(0, ${-this.scales.y.bandwidth() / 2})`);
+                this.g[placement] = d3.select("#bar-one");
+                return;
+            }
+
+            case "two": {
+                this.svg.append("g").attr("id", "bar-two")
+                    .attr("transform", `translate(0, ${this.scales.y.bandwidth() / 2})`);
+                this.g[placement] = d3.select("#bar-two");
+                return;
+            }
+
+            default: {
+                return false;
+            }
+        }
     },
 
-    data() {
+    axis: {
+        x: null,
+        y: null
+    },
+
+    colors: d3.scaleOrdinal(["one", "two"], ["lightgreen", "goldenrod"]),
+
+    create(char, season, placement) {
+        const data = this.data(char, season);
+        console.log(data);
+
+        this.append(placement);
+        let rects = this.g[placement].selectAll("rect").data(data, d => d.disc);
+
+        let enteredRects = rects.enter()
+            .append("rect")
+            .attr("height", this.scales.y.bandwidth)
+            .attr("x", this.padding.x)
+            .attr("y", d => this.scales.y(d.disc))
+            .attr("fill", this.colors(placement))
+
+        enteredRects.append("title")
         
+        mergedRects = enteredRects.merge(rects);
+
+        mergedRects.select("title")
+            .text(d => `${d.disc}: ${d.points}p`);
+
+        mergedRects.transition()
+            .duration(500)
+            .attr("width", d => this.scales.x(d.points) - this.padding.x);
+    },
+
+    data(char, season) {
+        const c = data.participant(char);
+        const s = data.season(season);
+
+        let discIds = disciplines.map(x => x.id);
+
+        let eventsByDisc = [];
+        s.competitionDays.forEach(compDay => {
+            compDay.events.forEach(event => {
+                let disc = disciplines.find(x => x.id === event.disciplineId);
+
+                let exists = eventsByDisc.find(x => x.disc === disc.name);
+                if (!exists) {
+                    eventsByDisc.push({
+                        disc: disc.name,
+                        events: [event]
+                    });
+                } else {
+                    exists.events.push(event);
+                }
+            });
+        });
+
+        let pointsPerDisc = [];
+        eventsByDisc.forEach(x => {
+            x.events.forEach(event => {
+                event.scores.sort((a, b) => b.score - a.score);
+                let index = event.scores.findIndex(y => y.participantId === c.id);
+                let pts = points(index);
+
+                let exists = pointsPerDisc.find(y => y.disc === x.disc);
+                if (!exists) {
+                    pointsPerDisc.push({
+                        disc: x.disc,
+                        points: pts
+                    })
+                } else {
+                    exists.points += pts;
+                }
+            });
+        });
+
+        return pointsPerDisc;
+    },
+
+    driver() {
+        this.setScales();
+        this.setAxis();
+
+        this.svg.append("g")
+            .attr("transform", `translate(0, ${this.svgH - this.padding.y})`)
+            .call(this.axis.x);
+
+        this.svg.append("g")
+            .attr("transform", `translate(${this.padding.x}, 0)`)
+            .call(this.axis.y);
     },
 
     g: {},
+
+    padding: {
+        x: 50,
+        y: 50
+    },
+
+    setAxis() {
+        this.axis.x = d3.axisBottom(this.scales.x);
+        this.axis.y = d3.axisLeft(this.scales.y);
+    },
+
+    setScales() {
+        this.scales.x = d3.scaleLinear([0, minMax("disc").max], [this.padding.x, this.svgW - this.padding.x]);
+        this.scales.y = d3.scaleBand(disciplines.map(x => x.name), [this.svgH - this.padding.y, this.padding.y]).padding(0.7);
+    },
+
+    scales: {
+        x: null,
+        y: null
+    },
 
     svg: d3.select("#bar"),
 
     svgH: parseInt(d3.select("#bar").attr("height")),
 
-    svgW: parseInt(d3.select("#bar").attr("width"))
+    svgW: parseInt(d3.select("#bar").attr("width")),
+}
+
+const data = {
+    participant(char) {
+        return participants.find(x => x.name.toLowerCase() === char.toLowerCase());
+    },
+
+    season(year) {
+        return seasons.find(x => x.year === year);
+    }
+}
+
+const minMax = (type) => {
+    switch (type) {
+        case "disc": {
+            let points = [];
+            participants.forEach(x => {
+                let years = seasons.map(y => y.year);
+                years.forEach(y => {
+                    let data = bar.data(x.name, y);
+                    let pts = data.map(y => y.points);
+                    points = [...points, ...pts];
+                });
+            });
+
+            points.sort((a, b) => b - a);
+
+            return {
+                max: points[0],
+                min: points[points.length - 1]
+            }
+        }
+
+        default: {
+            return false;
+        }
+    }
 }
 
 const pie = {
     append(placement) {
         switch (placement) {
             case "left": {
-                pie.svg.append("g")
-                    .attr("transform", `translate(${pie.padding.x}, ${pie.svgH / 2})`)
+                this.svg.append("g")
+                    .attr("transform", `translate(${this.padding.x}, ${this.svgH / 2})`)
                     .attr("id", "left");
 
-                pie.g["left"] = d3.select("#pie #left");
+                this.g["left"] = d3.select("#pie #left");
                 return;
             }
 
             case "right": {
-                pie.svg.append("g")
-                    .attr("transform", `translate(${pie.svgW - pie.padding.x}, ${pie.svgH / 2})`)
+                this.svg.append("g")
+                    .attr("transform", `translate(${this.svgW - this.padding.x}, ${this.svgH / 2})`)
                     .attr("id", "right");
 
-                pie.g["right"] = d3.select("#pie #right");
+                this.g["right"] = d3.select("#pie #right");
                 return;
             }
 
             case "bottom": {
-                pie.svg.append("g")
-                    .attr("transform", `translate(${pie.svgW / 2}, ${pie.svgH - pie.padding.y})`)
+                this.svg.append("g")
+                    .attr("transform", `translate(${this.svgW / 2}, ${this.svgH - this.padding.y})`)
                     .attr("id", "bottom");
 
-                pie.g["bottom"] = d3.select("#pie #bottom");
+                this.g["bottom"] = d3.select("#pie #bottom");
                 return;
             }
 
             case "top": {
-                pie.svg.append("g")
-                    .attr("transform", `translate(${pie.svgH / 2}, ${pie.padding.y})`)
+                this.svg.append("g")
+                    .attr("transform", `translate(${this.svgH / 2}, ${this.padding.y})`)
                     .attr("id", "top");
 
-                pie.g["top"] = d3.select("#pie #top");
+                this.g["top"] = d3.select("#pie #top");
                 return;
             }
         }
@@ -62,49 +224,70 @@ const pie = {
     colors: d3.scaleOrdinal(locations.map(x => x.name), ["#D4AF37", "lightblue", "#98FB98", "#2F4F4F", "#8B4513"]),
 
     clear() {
-        pie.svg.selectAll("*").remove();
+        this.svg.selectAll("*").remove();
     },
 
     create(char, season, placement) {
-        let data = pie.data(char, season);
+        let data = this.data(char, season);
         let totalPoints = 0;
         data.forEach(x => totalPoints += x.points);
 
-        if (!totalPoints) return false;
+        if (!totalPoints) {
+            data = [{
+                loc: "Did not compete during the selected season",
+                points: 1
+            }]
+        }
 
-        pie.append(placement);
+        this.append(placement);
 
-        let pieData = pie.pie(data);
+        let pieData = this.pie(data);
         let percentage = {};
 
         data.forEach(x => {
             percentage[x.loc] = Math.round((x.points / totalPoints) * 100);
         });
 
-        //pie.g[placement].selectAll("*").remove();
-
-        let paths = pie.g[placement].selectAll("path")
+        let paths = this.g[placement].selectAll("path")
             .data(pieData, d => d.data.loc);
 
-        paths.enter()
-            .append("path")
-            .attr("d", pie.arc)
-            .attr("fill", d => pie.colors(d.data.loc))
-            .attr("stroke", "black")
-            .style("stroke-width", "1px")
-            .append("title")
-            .text((d) => `${d.data.loc}: ${percentage[d.data.loc]}%`)
+        paths.exit().remove();
 
-        paths.transition()
+        let enteredPaths = paths.enter()
+            .append("path")
+            .attr("d", d3.arc().innerRadius(0).outerRadius(0))
+            .attr("fill", d => {
+                if (!totalPoints) return "#ddd";
+                return this.colors(d.data.loc);
+            })
+            .attr("stroke", "black")
+            .style("stroke-width", "1px");
+
+        enteredPaths.append("title");
+
+        let mergedPaths = enteredPaths.merge(paths);
+
+        mergedPaths.select("title")
+            .text((d) => {
+                if (!totalPoints) return `${d.data.loc}`;
+                return `${d.data.loc}: ${percentage[d.data.loc]}%`;
+            });
+
+        if (!totalPoints) {
+            mergedPaths.attr("d", this.arc);
+            return data;
+        }
+
+        mergedPaths.transition()
             .duration(500)
-            .attr("d", pie.arc)
+            .attr("d", this.arc)
 
         return data;
     },
 
     data(char, season) {
-        const c = participants.find(x => x.name.toLowerCase() === char.toLowerCase());
-        const s = seasons.find(x => x.year === season);
+        const c = data.participant(char);
+        const s = data.season(season);
 
         if (!c) return false;
 
@@ -210,3 +393,4 @@ const test = () => {
 }
 
 test();
+bar.driver();
