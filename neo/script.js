@@ -4,7 +4,7 @@ const bar = {
     },
 
     data() {
-
+        
     },
 
     g: {},
