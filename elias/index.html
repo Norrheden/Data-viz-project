@@ -3,12 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
+    
+    <select id="selectChar">
+        <option value="" disabled selected>Välj en karaktär</option>
+    </select>
+    
+    <div class="colors">
+        <div class="color god"></div>
+        <div class="color monster"></div>
+        <div class="color fairy"></div>
+        <div class="color other"></div>
+    </div>
+    <div id="chart"></div>
+
     <script src="/database/dataset.v2.js"></script>
     <script src="/main.js"></script>
     <script src="/d3/d3.v7.min.js"></script>
     <script src="script.js"></script>
+
+
 </body>
 </html>
