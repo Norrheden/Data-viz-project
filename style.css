@@ -48,9 +48,15 @@ h1 {
     margin: 50px;
 }
 
-#years {
-    margin-top: 20px;
-    margin-bottom: 20px;
+#year {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--main-color);
+    padding: 0px 0px 10px 0px;
+    cursor: pointer;
+    width: 120px;
 }
 
 #table-and-chart-container {
@@ -66,8 +72,8 @@ h1 {
 }
 
 #table-box div {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     padding-left: 12px;
     padding-right: 12px;
     border-bottom: 1px solid var(--main-color);
@@ -80,7 +86,14 @@ h1 {
 #table-box div:first-child {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    background: #D4AF37;
+    background-color: var(--main-color);
+    color: white;
+    font-weight: bold;
+}
+
+#table-box div:nth-child(2) {
+    background-color: #D4AF37;
+    color: #333;
 }
 
 #table-box div:last-child {
